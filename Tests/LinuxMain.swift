@@ -40,6 +40,12 @@ extension BlockBasedKVORuleTests {
     ]
 }
 
+extension ChildConfigTests {
+    static var allTests: [(String, (ChildConfigTests) -> () throws -> Void)] = [
+        ("testValidChildConfig", testValidChildConfig)
+    ]
+}
+
 extension ClassDelegateProtocolRuleTests {
     static var allTests: [(String, (ClassDelegateProtocolRuleTests) -> () throws -> Void)] = [
         ("testWithDefaultConfiguration", testWithDefaultConfiguration)
@@ -207,7 +213,6 @@ extension ConfigurationTests {
         ("testLevel1", testLevel1),
         ("testLevel2", testLevel2),
         ("testLevel3", testLevel3),
-        ("testNestedConfigurationWithCustomRootPath", testNestedConfigurationWithCustomRootPath),
         ("testMergedWarningThreshold", testMergedWarningThreshold),
         ("testNestedWhitelistedRules", testNestedWhitelistedRules),
         ("testNestedConfigurationsWithCustomRulesMerge", testNestedConfigurationsWithCustomRulesMerge),
@@ -1715,6 +1720,7 @@ XCTMain([
     testCase(ArrayInitRuleTests.allTests),
     testCase(AttributesRuleTests.allTests),
     testCase(BlockBasedKVORuleTests.allTests),
+    testCase(ChildConfigTests.allTests),
     testCase(ClassDelegateProtocolRuleTests.allTests),
     testCase(ClosingBraceRuleTests.allTests),
     testCase(ClosureBodyLengthRuleTests.allTests),
