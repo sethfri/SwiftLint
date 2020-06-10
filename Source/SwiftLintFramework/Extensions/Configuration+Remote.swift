@@ -13,9 +13,7 @@ internal extension Configuration.FileGraph.FilePath {
     private static let remoteCacheVersionNumber: String = "v1"
 
     /// Use this to get the path to the cache directory for the current cache format
-    private static var versionedRemoteCachePath: String {
-        "\(remoteCachePath)/\(remoteCacheVersionNumber)"
-    }
+    private static let versionedRemoteCachePath: String = "\(remoteCachePath)/\(remoteCacheVersionNumber)"
 
     // MARK: - Methods: Resolving
     mutating func resolve(
@@ -199,7 +197,7 @@ internal extension Configuration.FileGraph.FilePath {
 
     private func filePath(for urlString: String, rootDirectory: String) -> String {
         let adjustedUrlString = urlString.replacingOccurrences(of: "/", with: "_")
-        let path = "\(Configuration.FileGraph.FilePath.versionedRemoteCachePath)" + "/\(adjustedUrlString).yml"
+        let path = Configuration.FileGraph.FilePath.versionedRemoteCachePath + "/\(adjustedUrlString).yml"
         return path.bridge().absolutePathRepresentation(rootDirectory: rootDirectory)
     }
 
