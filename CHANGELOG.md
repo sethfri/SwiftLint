@@ -1,4 +1,4 @@
-## Master
+## 0.40.2-hotfix: Fix Nested Spec
 
 #### Breaking
 
