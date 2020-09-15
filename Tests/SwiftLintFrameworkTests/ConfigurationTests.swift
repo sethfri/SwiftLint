@@ -255,17 +255,6 @@ class ConfigurationTests: XCTestCase {
         XCTAssertEqual(configuration.configuration(for: file), configuration)
     }
 
-    func testConfigurationWithSwiftFileAsRootAndNestedConfiguration() {
-        let rootConfiguration = Configuration(path: Configuration.fileName,
-                                              rootPath: nil,
-                                              optional: true, quiet: true)
-        let expectedConfiguration = Configuration(path: projectMockYAML2,
-                                                  rootPath: projectMockSwift2,
-                                                  optional: true, quiet: true)
-        let file = SwiftLintFile(path: projectMockSwift2)!
-        XCTAssertEqual(rootConfiguration.configuration(for: file), expectedConfiguration)
-    }
-
     // MARK: - Testing custom indentation
 
     func testIndentationTabs() {
