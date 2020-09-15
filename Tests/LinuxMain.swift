@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 1.0.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 @testable import SwiftLintFrameworkTests
@@ -196,6 +196,7 @@ extension ConfigurationTests {
         ("testCustomConfiguration", testCustomConfiguration),
         ("testConfigurationWithSwiftFileAsRoot", testConfigurationWithSwiftFileAsRoot),
         ("testConfigurationWithSwiftFileAsRootAndCustomConfiguration", testConfigurationWithSwiftFileAsRootAndCustomConfiguration),
+        ("testConfigurationWithSwiftFileAsRootAndNestedConfiguration", testConfigurationWithSwiftFileAsRootAndNestedConfiguration),
         ("testIndentationTabs", testIndentationTabs),
         ("testIndentationSpaces", testIndentationSpaces),
         ("testIndentationFallback", testIndentationFallback),

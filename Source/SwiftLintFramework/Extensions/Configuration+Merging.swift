@@ -16,7 +16,7 @@ extension Configuration {
     }
 
     private func configuration(forPath path: String) -> Configuration {
-        if path == rootDirectory {
+        if path == rootDirectory && configurationPath != nil {
             return self
         }
 

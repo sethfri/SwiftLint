@@ -14,7 +14,8 @@
 
 #### Bug Fixes
 
-* None.
+* Fix finding the nested config when a single file path is passed.  
+  [Seth Friedman](https://github.com/sethfri)
 
 ## 0.40.2: Demo Unit
 
