@@ -9,6 +9,7 @@ extension Configuration {
     ///
     /// - returns: A new configuration.
     public func configuration(for file: SwiftLintFile) -> Configuration {
+        queuedPrint("File path is \(file.path!)")
         if let containingDir = file.path?.bridge().deletingLastPathComponent {
             return configuration(forPath: containingDir)
         }
@@ -16,17 +17,24 @@ extension Configuration {
     }
 
     private func configuration(forPath path: String) -> Configuration {
+        queuedPrint("rootDirectory is \(String(describing: rootDirectory))")
         if path == rootDirectory && configurationPath != nil {
+            queuedPrint("Returning early")
+            queuedPrint("Path is \(path)")
+            queuedPrint("configurationPath is \(String(describing: configurationPath))")
             return self
         }
 
         let pathNSString = path.bridge()
         let configurationSearchPath = pathNSString.appendingPathComponent(Configuration.fileName)
+        queuedPrint("configurationSearchPath is \(configurationSearchPath)")
 
         // If a configuration exists and it isn't us, load and merge the configurations
         if configurationSearchPath != configurationPath &&
             FileManager.default.fileExists(atPath: configurationSearchPath) {
+            queuedPrint("Reached merging logic")
             let fullPath = pathNSString.absolutePathRepresentation()
+            queuedPrint("Merging logic fullPath is \(fullPath)")
             let customRuleIdentifiers = (rules.first(where: { $0 is CustomRules }) as? CustomRules)?
                 .configuration.customRuleConfigurations.map { $0.identifier }
             let config = Configuration.getCached(atPath: fullPath) ??
@@ -37,11 +45,14 @@ extension Configuration {
                     quiet: true,
                     customRulesIdentifiers: customRuleIdentifiers ?? []
                 )
+            queuedPrint("Merging logic initial rules mode: \(config.rulesMode)")
             return merge(with: config)
         }
 
         // If we are not at the root path, continue down the tree
         if path != rootPath && path != "/" {
+            queuedPrint("About to continue down the tree for \(path)")
+            queuedPrint("Continuing down the tree with \(pathNSString.deletingLastPathComponent)")
             return configuration(forPath: pathNSString.deletingLastPathComponent)
         }
 

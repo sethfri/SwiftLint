@@ -205,6 +205,9 @@ public struct Configuration: Hashable {
             let yamlContents = try String(contentsOfFile: fullPath, encoding: .utf8)
             let dict = try YamlParser.parse(yamlContents)
             if !quiet {
+                queuedPrint("Path from Configuration.swift: \(path)")
+                queuedPrint("rootPath from Configuration.swift: \(String(describing: rootPath))")
+                queuedPrint("fullPath from Configuration.swift: \(fullPath)")
                 queuedPrintError("Loading configuration from '\(path)'")
             }
             self.init(dict: dict, enableAllRules: enableAllRules,
