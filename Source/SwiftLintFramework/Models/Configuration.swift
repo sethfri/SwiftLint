@@ -178,8 +178,12 @@ public struct Configuration: Hashable {
                 optional: Bool = true, quiet: Bool = false, enableAllRules: Bool = false,
                 cachePath: String? = nil, customRulesIdentifiers: [String] = []) {
         let fullPath: String
-        if let rootPath = rootPath, rootPath.isDirectory() {
-            fullPath = path.bridge().absolutePathRepresentation(rootDirectory: rootPath)
+        if let rootPath = rootPath {
+            if rootPath.isDirectory {
+                fullPath = path.bridge().absolutePathRepresentation(rootDirectory: rootPath)
+            } else {
+                fullPath = path.bridge().absolutePathRepresentation(rootDirectory: rootPath.bridge().deletingLastPathComponent)
+            }
         } else {
             fullPath = path.bridge().absolutePathRepresentation()
         }

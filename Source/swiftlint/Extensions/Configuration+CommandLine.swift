@@ -227,7 +227,18 @@ extension Configuration {
         queuedPrint("Calculating rootPath")
         queuedPrint("Paths are: \(paths)")
         queuedPrint("Going to return rootPath: \(String(describing: paths.count == 1 ? paths.first?.absolutePathStandardized() : nil))")
-        return paths.count == 1 ? paths.first?.absolutePathStandardized() : nil
+
+        guard paths.count == 1, let path = paths.first else {
+            return nil
+        }
+
+        let standardizedPath = path.absolutePathStandardized()
+
+        if standardizedPath.isDirectory {
+            return standardizedPath
+        } else {
+            return standardizedPath.bridge().deletingLastPathComponent
+        }
     }
 
     // MARK: LintOrAnalyze Command
