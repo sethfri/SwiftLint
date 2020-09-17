@@ -71,8 +71,10 @@ extension Configuration {
         }
 
         if isDirectoryObjC.boolValue {
+            queuedPrint("About to return \(rootPath) for rootPath")
             return rootPath
         } else {
+            queuedPrint("About to return \(rootPath.bridge().deletingLastPathComponent) for rootPath")
             return rootPath.bridge().deletingLastPathComponent
         }
     }
