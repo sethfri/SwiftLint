@@ -11,13 +11,52 @@ extension Configuration {
     public func configuration(for file: SwiftLintFile) -> Configuration {
         queuedPrint("File path is \(file.path!)")
         if let containingDir = file.path?.bridge().deletingLastPathComponent {
-            return configuration(forPath: containingDir)
+            return configuration(forPath: containingDir, currentConfiguration: self)
         }
         return self
     }
 
-    private func configuration(forPath path: String) -> Configuration {
-        queuedPrint("rootDirectory is \(String(describing: rootDirectory))")
+    private func configuration(forPath path: String, currentConfiguration: Configuration) -> Configuration {
+        if path == "/" || path == rootPath {
+            return currentConfiguration
+        }
+
+        let pathNSString = path.bridge()
+        let configurationSearchPath = pathNSString.appendingPathComponent(Configuration.fileName)
+        queuedPrint("configurationSearchPath is \(configurationSearchPath)")
+
+        var newConfig = currentConfiguration
+
+        // If a configuration exists and it isn't us, load and merge the configurations
+        if configurationSearchPath != configurationPath &&
+            FileManager.default.fileExists(atPath: configurationSearchPath) {
+            queuedPrint("Reached merging logic")
+            let fullPath = pathNSString.absolutePathRepresentation()
+            queuedPrint("Merging logic fullPath is \(fullPath)")
+            let customRuleIdentifiers = (rules.first(where: { $0 is CustomRules }) as? CustomRules)?
+                .configuration.customRuleConfigurations.map { $0.identifier }
+            let config = Configuration.getCached(atPath: fullPath) ??
+                Configuration(
+                    path: configurationSearchPath,
+                    rootPath: fullPath,
+                    optional: false,
+                    quiet: true,
+                    customRulesIdentifiers: customRuleIdentifiers ?? []
+                )
+            queuedPrint("Merging logic initial rules mode: \(config.rulesMode)")
+            newConfig = currentConfiguration.merge(with: config)
+        }
+
+        /*if path == rootPath {
+            return newConfig
+        } else {*/
+            return newConfig.configuration(
+                forPath: pathNSString.deletingLastPathComponent,
+                currentConfiguration: newConfig
+            )
+        //}
+
+        /*queuedPrint("rootDirectory is \(String(describing: rootDirectory))")
         if path == rootDirectory && configurationPath != nil {
             queuedPrint("Returning early")
             queuedPrint("Path is \(path)")
@@ -57,7 +96,7 @@ extension Configuration {
         }
 
         // If nothing else, return self
-        return self
+        return self*/
     }
 
     private var rootDirectory: String? {
@@ -74,7 +113,7 @@ extension Configuration {
             queuedPrint("About to return \(rootPath) for rootPath")
             return rootPath
         } else {
-            queuedPrint("About to return \(rootPath.bridge().deletingLastPathComponent) for rootPath")
+            queuedPrint("About to return \(rootPath.bridge().deletingLastPathComponent) for rootPath after deleting")
             return rootPath.bridge().deletingLastPathComponent
         }
     }
@@ -169,7 +208,7 @@ extension Configuration {
             reporter: reporter, // Always use the parent reporter
             rules: mergingRules(with: configuration),
             cachePath: cachePath, // Always use the parent cache path
-            rootPath: configuration.rootPath,
+            rootPath: rootPath,
             indentation: configuration.indentation,
             allowZeroLintableFiles: configuration.allowZeroLintableFiles
         )

@@ -37,12 +37,12 @@ extension ConfigurationTests {
 
     func testLevel3() {
         XCTAssertEqual(projectMockConfig0.configuration(for: SwiftLintFile(path: projectMockSwift3)!),
-                       projectMockConfig0.merge(with: projectMockConfig3))
+                       projectMockConfig0.merge(with: projectMockConfig3).merge(with: projectMockConfig2))
     }
 
     func testNestedConfigurationWithCustomRootPath() {
         XCTAssertNotEqual(projectMockConfig0.rootPath, projectMockConfig3.rootPath)
-        XCTAssertEqual(projectMockConfig0.merge(with: projectMockConfig3).rootPath, projectMockConfig3.rootPath)
+        XCTAssertEqual(projectMockConfig0.merge(with: projectMockConfig3).rootPath, projectMockConfig0.rootPath)
     }
 
     func testMergedWarningThreshold() {

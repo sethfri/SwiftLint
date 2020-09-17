@@ -226,7 +226,6 @@ extension Configuration {
         // We don't know the root when more than one path is passed (i.e. not useful if the root of 2 paths is ~)
         queuedPrint("Calculating rootPath")
         queuedPrint("Paths are: \(paths)")
-        queuedPrint("Going to return rootPath: \(String(describing: paths.count == 1 ? paths.first?.absolutePathStandardized() : nil))")
 
         guard paths.count == 1, let path = paths.first else {
             return nil
