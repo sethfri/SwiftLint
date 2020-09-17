@@ -33,7 +33,7 @@ extension Configuration {
         var currentConfig = self
 
         while pathComponentsToTraverse.count > 0 {
-            nextPath = nextPath.appendingPathComponent(pathComponentsToTraverse.removeFirst())
+            nextPath = nextPath.appendingPathComponent(pathComponentsToTraverse.removeFirst()).bridge()
             let configurationSearchPath = nextPath.appendingPathComponent(Configuration.fileName)
             queuedPrint("configurationSearchPath is \(configurationSearchPath)")
 
