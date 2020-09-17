@@ -314,14 +314,3 @@ private func enabledRules(from configuredRules: [Rule],
         }
     }
 }
-
-private extension String {
-    func isDirectory() -> Bool {
-        var isDir: ObjCBool = false
-        if FileManager.default.fileExists(atPath: self, isDirectory: &isDir) {
-            return isDir.boolValue
-        }
-
-        return false
-    }
-}

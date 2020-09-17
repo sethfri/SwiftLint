@@ -92,6 +92,15 @@ extension String {
         return false
     }
 
+    public var isDirectory: Bool {
+        var isDirectoryObjC: ObjCBool = false
+        if FileManager.default.fileExists(atPath: self, isDirectory: &isDirectoryObjC) {
+            return isDirectoryObjC.boolValue
+        }
+
+        return false
+    }
+
     /// Count the number of occurrences of the given character in `self`
     /// - Parameter character: Character to count
     /// - Returns: Number of times `character` occurs in `self`
