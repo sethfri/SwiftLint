@@ -226,8 +226,10 @@ extension Configuration {
         // We don't know the root when more than one path is passed (i.e. not useful if the root of 2 paths is ~)
         queuedPrint("Calculating rootPath")
         queuedPrint("Paths are: \(paths)")
-        queuedPrint("Going to return rootPath: \(String(describing: paths.count == 1 ? paths.first?.absolutePathStandardized() : nil))")
+        let rootPath = paths.count == 1 ? paths.first?.absolutePathStandardized() : nil
+        queuedPrint("Going to return rootPath: \(String(describing: rootPath))")
         return paths.count == 1 ? paths.first?.absolutePathStandardized() : nil
+        // TODO: Still might be good to remove the filename at the end of this
     }
 
     // MARK: LintOrAnalyze Command

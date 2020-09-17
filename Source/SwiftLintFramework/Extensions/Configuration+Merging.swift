@@ -17,7 +17,54 @@ extension Configuration {
     }
 
     private func configuration(forPath path: String) -> Configuration {
-        queuedPrint("rootDirectory is \(String(describing: rootDirectory))")
+        // configurationPath is initial configuration: cash-ios/.swiftlint.yml
+
+        // TOOD: Might need to fix this guard
+        guard let initialConfigPath = configurationPath else {
+            return self
+        }
+
+        let initialConfigDirectory = initialConfigPath.bridge().deletingLastPathComponent // cash-ios
+        // cash-ios/Code/AppDelegate/Sources
+        var pathComponentsToTraverse = path.bridge().pathComponents.drop { pathComponent -> Bool in
+            initialConfigDirectory.bridge().pathComponents.contains(pathComponent)
+        }
+        var nextPath = initialConfigDirectory.bridge()
+        var currentConfig = self
+
+        while pathComponentsToTraverse.count > 0 {
+            nextPath = nextPath.appendingPathComponent(pathComponentsToTraverse.removeFirst())
+            let configurationSearchPath = nextPath.appendingPathComponent(Configuration.fileName)
+            queuedPrint("configurationSearchPath is \(configurationSearchPath)")
+
+            // If a configuration exists and it isn't us, load and merge the configurations
+            if configurationSearchPath != configurationPath &&
+                FileManager.default.fileExists(atPath: configurationSearchPath) {
+                queuedPrint("Reached merging logic")
+                let fullPath = nextPath.absolutePathRepresentation()
+                queuedPrint("Merging logic fullPath is \(fullPath)")
+                let customRuleIdentifiers = (rules.first(where: { $0 is CustomRules }) as? CustomRules)?
+                    .configuration.customRuleConfigurations.map { $0.identifier }
+                let config = Configuration.getCached(atPath: fullPath) ??
+                    Configuration(
+                        path: configurationSearchPath,
+                        rootPath: fullPath,
+                        optional: false,
+                        quiet: true,
+                        customRulesIdentifiers: customRuleIdentifiers ?? []
+                    )
+                queuedPrint("Merging logic initial rules mode: \(config.rulesMode)")
+                currentConfig = currentConfig.merge(with: config)
+            }
+        }
+
+        return currentConfig
+
+
+
+
+
+        /*queuedPrint("rootDirectory is \(String(describing: rootDirectory))")
         if path == rootDirectory && configurationPath != nil {
             queuedPrint("Returning early")
             queuedPrint("Path is \(path)")
@@ -57,7 +104,7 @@ extension Configuration {
         }
 
         // If nothing else, return self
-        return self
+        return self*/
     }
 
     private var rootDirectory: String? {

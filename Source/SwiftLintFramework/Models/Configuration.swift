@@ -181,6 +181,7 @@ public struct Configuration: Hashable {
         if let rootPath = rootPath, rootPath.isDirectory() {
             fullPath = path.bridge().absolutePathRepresentation(rootDirectory: rootPath)
         } else {
+            queuedPrint("rootPath is nil in Configuration init")
             fullPath = path.bridge().absolutePathRepresentation()
         }
 
