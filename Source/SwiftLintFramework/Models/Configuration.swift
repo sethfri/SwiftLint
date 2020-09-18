@@ -179,8 +179,12 @@ public struct Configuration: Hashable {
                 cachePath: String? = nil, customRulesIdentifiers: [String] = []) {
         let fullPath: String
         if let rootPath = rootPath, rootPath.isDirectory() {
+            queuedPrint("Configuration.swift Path A")
+            queuedPrint("rootPath is \(rootPath)")
             fullPath = path.bridge().absolutePathRepresentation(rootDirectory: rootPath)
         } else {
+            queuedPrint("Configuration.swift Path B")
+            queuedPrint("Path here is: \(path)")
             fullPath = path.bridge().absolutePathRepresentation()
         }
 

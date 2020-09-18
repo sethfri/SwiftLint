@@ -61,6 +61,8 @@ extension Configuration {
     }
 
     private var rootDirectory: String? {
+        queuedPrint("Calculating rootDirectory")
+        queuedPrint("rootPath is \(rootPath ?? "nil")")
         guard let rootPath = rootPath else {
             return nil
         }
@@ -71,8 +73,10 @@ extension Configuration {
         }
 
         if isDirectoryObjC.boolValue {
+            queuedPrint("rootDirectory Path A")
             return rootPath
         } else {
+            queuedPrint("rootDirectory Path B")
             return rootPath.bridge().deletingLastPathComponent
         }
     }
