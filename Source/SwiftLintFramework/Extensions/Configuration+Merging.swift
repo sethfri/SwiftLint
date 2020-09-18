@@ -18,7 +18,9 @@ extension Configuration {
 
     private func configuration(forPath path: String) -> Configuration {
         queuedPrint("rootDirectory is \(String(describing: rootDirectory))")
-        if path == rootDirectory && configurationPath != nil {
+        let rootConfigurationDirectory = configurationPath?.bridge().deletingLastPathComponent
+        // We're linting a file in the same directory as the root configuration we've already loaded
+        if path == rootConfigurationDirectory {
             queuedPrint("Returning early")
             queuedPrint("Path is \(path)")
             queuedPrint("configurationPath is \(String(describing: configurationPath))")
