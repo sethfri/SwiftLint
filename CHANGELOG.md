@@ -27,6 +27,9 @@
 * Fix some false positives in rule `explicit_self`.  
   [Sven Münnich](https://github.com/svenmuennich)
 
+* Fix finding a nested config when a single file path is passed.  
+  [Seth Friedman](https://github.com/sethfri)
+
 ## 0.40.3: Greased Up Drum Bearings
 
 #### Breaking
@@ -62,9 +65,6 @@
   5.3's 'multiple trailing closures' feature is used.
   [Jumhyn](https://github.com/jumhyn)
   [#3295](https://github.com/realm/SwiftLint/issues/3295)
-
-* Fix finding a nested config when a single file path is passed.  
-  [Seth Friedman](https://github.com/sethfri)
 
 ## 0.40.2: Demo Unit
 
